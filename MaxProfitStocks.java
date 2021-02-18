@@ -6,18 +6,22 @@ public class MaxProfitStocks {
         public static void main(String[] args) {
             Scanner input = new Scanner(System.in);
 
-            int numberOfStockPrices = input.nextInt();                    //Read number of buildings from user
+            //Read number of stocks from user
+            int numberOfStockPrices = input.nextInt();
             int[] stockPrices = new int[numberOfStockPrices];
 
-            for(int i = 0; i < numberOfStockPrices; i++){                 //Read all building heights
+            //Read all stock prices
+            for(int i = 0; i < numberOfStockPrices; i++){
                 stockPrices[i] = input.nextInt();
             }
 
-            int[] priceChangeArray = createPriceChangeArray(stockPrices);       //Calculate Array of height changes based on input buildings.
+            //Calculate Array of price changes based on input prices.
+            int[] priceChangeArray = createPriceChangeArray(stockPrices);
 
-            Jump maxProfit = findMaxProfit(priceChangeArray, 0, priceChangeArray.length-1);       //Initial call the recursive solution
+            //Initial call the recursive solution
+            Jump maxProfit = findMaxProfit(priceChangeArray, 0, priceChangeArray.length-1);
 
-            System.out.print(maxProfit.profit);             //output result
+            System.out.print(maxProfit.profit);
 
         }
 
@@ -43,16 +47,22 @@ public class MaxProfitStocks {
          * @return A Jump object containing where the jump began, ended, and the maximum profit.
          */
         public static Jump findMaxProfit(int[] _priceChangeArray, int _firstPosition, int _lastPosition){
-            int middlePosition = (_firstPosition + _lastPosition) / 2;            //initial and floor mid variable.
+            //initial and floor mid variable.
+            int middlePosition = (_firstPosition + _lastPosition) / 2;
 
-            if(_firstPosition == _lastPosition)                   //Base Case
+            //Base Case
+            if(_firstPosition == _lastPosition)
                 return(new Jump(_firstPosition, _lastPosition, _priceChangeArray[_firstPosition]));
             else{
-                Jump leftJump = findMaxProfit(_priceChangeArray, _firstPosition, middlePosition);                //Recursively solve left side of the array
-                Jump rightJump = findMaxProfit(_priceChangeArray, middlePosition + 1, _lastPosition);  //Recursively solve right side of the array
-                Jump crossJump = findMaxCrossingProfit(_priceChangeArray, _firstPosition, middlePosition, _lastPosition); //Solve for jumps that cross the midpoint of the array
+                //Recursively solve left side of the array
+                Jump leftJump = findMaxProfit(_priceChangeArray, _firstPosition, middlePosition);
+                //Recursively solve right side of the array
+                Jump rightJump = findMaxProfit(_priceChangeArray, middlePosition + 1, _lastPosition);
+                //Solve for jumps that cross the midpoint of the array
+                Jump crossJump = findMaxCrossingProfit(_priceChangeArray, _firstPosition, middlePosition, _lastPosition);
 
-                if(leftJump.profit >= rightJump.profit && leftJump.profit >= crossJump.profit)            //Determine the maximum profit and return it.
+                //Determine the maximum profit and return it.
+                if(leftJump.profit >= rightJump.profit && leftJump.profit >= crossJump.profit)
                     return leftJump;
                 else if(rightJump.profit >= leftJump.profit && rightJump.profit >= crossJump.profit)
                     return rightJump;
